@@ -1,7 +1,8 @@
 - name: Download Team City
   get_url: url={{ teamcity.download_url }} dest={{ teamcity.download_path }}
-- name: Unpack team city archive
-  command: "tar -xvzf {{ teamcity.download_path }} --directory {{ teamcity.installation_directory }} creates={{ teamcity.installation_path }}"
+
+- name: Unarchive Team City
+  unarchive: src={{ teamcity.download_path }} dest={{ teamcity.installation_directory }} creates={{ teamcity.installation_path }} copy=no
 
 - name: Change team city install directory owner
   file: path={{ teamcity.installation_path }} owner={{ teamcity.user }} group={{ teamcity.user }} recurse=yes state=directory
