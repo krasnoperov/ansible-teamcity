@@ -1,0 +1,17 @@
+teamcity:
+  servernames:
+    - teamcity.{{domain}}
+  database:
+    name: teamcity_db
+    user: teamcity_user
+    password: teamcity_password
+  user: teamcity
+  port: 8111
+  home: "{{teamcity_home}}"
+  version: "{{teamcity_version}}"
+  download_path: "{{teamcity_home}}/TeamCity-{{teamcity_version}}.tar.gz"
+  installation_directory: "{{teamcity_home}}"
+  installation_path: "{{teamcity_home}}/TeamCity"
+  data_path: "{{teamcity_home}}/TeamCityData"
+  download_url: "http://download.jetbrains.com/teamcity/TeamCity-{{ teamcity_version }}.tar.gz"
+  jdbc_url: "http://jdbc.postgresql.org/download/postgresql-9.3-1101.jdbc41.jar"

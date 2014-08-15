@@ -1,0 +1,41 @@
+upstream teamcity {
+{% if not 'teamcityservers' in group_names  %}
+    ip_hash;
+  {% for host in groups.get('teamcityservers') %}
+    server                  {{ hostvars[host]['ansible_default_ipv4']['address']  }}:{{ teamcity.port }} max_fails=3  fail_timeout=15s;
+  {% endfor %}
+{% else %}
+    server                  127.0.0.1:{{ teamcity.port }};
+{% endif %}
+}
+
+server {
+    listen 80;
+
+    charset                 utf-8;
+    server_tokens           off;
+
+    server_name             {% for name in teamcity.servernames %}{{name}} {%endfor%};
+
+    access_log              /var/log/nginx/teamcity.access.log;
+    error_log               /var/log/nginx/teamcity.error.log;
+
+    location /robots.txt    { alias /etc/nginx/pages/robots.txt; }
+
+    location / {
+
+        proxy_pass          http://teamcity;
+        proxy_redirect      off;
+        proxy_set_header    Host              $host;
+        proxy_set_header    X-Real-IP         $remote_addr;
+        proxy_set_header    X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Forwarded-Proto $scheme;
+
+        proxy_connect_timeout   150;
+        proxy_send_timeout      100;
+        proxy_read_timeout      100;
+        proxy_buffers           4 32k;
+        client_max_body_size    0;
+        client_body_buffer_size 128k;
+    }
+}

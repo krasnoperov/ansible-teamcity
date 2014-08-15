@@ -1,0 +1,27 @@
+---
+- name: Check add-apt-repository
+  apt: pkg=python-software-properties state=latest update_cache=yes cache_valid_time=3600
+
+- name: Update repositories
+  apt_repository: repo={{ item }} state=present update_cache=yes
+  with_items:
+    - ppa:webupd8team/java
+    - ppa:chris-lea/node.js
+
+- name: Accept Oracle license prior JDK installation
+  shell: echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections; echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections creates=/usr/lib/jvm/java-7-oracle
+
+- name: Install packages
+  apt: pkg={{ item }} state=present
+  with_items:
+    - oracle-java7-installer
+    - nodejs
+    - python-virtualenv
+    - ansible
+
+- name: Packages | Install required node packages.
+  npm: name={{item}} global=yes
+  with_items:
+   - less
+   - bower
+   - grunt-cli

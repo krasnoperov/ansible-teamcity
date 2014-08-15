@@ -1,0 +1,14 @@
+limits:
+  user: postfix
+  max_open_files: 65535
+
+postfix:
+  smtpport: 587
+
+mail:
+  debug: False
+  domain: teamcity.{{domain}}
+  selector: main
+  keydomain: main._domainkey.teamcity.{{domain}}
+  user: teamcity@{{domain}}
+  signdomain: "{{domain}}"

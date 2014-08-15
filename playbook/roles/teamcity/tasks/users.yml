@@ -1,0 +1,3 @@
+---
+- name: Create teamcity user
+  user: name={{ teamcity.user }} home={{ teamcity.home }} comment="Teamcity User" generate_ssh_key=yes shell="/bin/bash"

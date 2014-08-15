@@ -1,0 +1,7 @@
+- name: Make Nginx Assets directory
+  file: dest='/etc/nginx/pages/' state=directory
+
+- name: Copy Nginx Assets
+  copy: src={{item}} dest=/etc/nginx/pages/{{item}}
+  with_items:
+    - robots.txt

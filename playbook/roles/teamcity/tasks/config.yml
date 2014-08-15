@@ -1,0 +1,12 @@
+---
+- name: Create config directory
+  file: path={{ teamcity.data_path }}/config/ owner={{ teamcity.user }} group={{ teamcity.user }} recurse=yes state=directory
+
+- name: Create database settings
+  template: src=database.properties.j2 dest={{teamcity.data_path}}/config/database.properties owner={{ teamcity.user }} group={{ teamcity.user }} mode=755
+
+- name: Create run script
+  template: src=teamcity.j2 dest=/etc/init.d/teamcity mode=755
+
+- name: Start teamcity
+  service: name=teamcity state=started

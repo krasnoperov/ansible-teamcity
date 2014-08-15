@@ -1,0 +1,6 @@
+---
+- include: packages.yml tags=setup,packages
+- include: iptables.yml tags=setup,iptables
+- include: limits.yml tags=setup,limits
+- include: assets.yml tags=setup,assets
+- include: vhosts.yml tags=setup,vhost

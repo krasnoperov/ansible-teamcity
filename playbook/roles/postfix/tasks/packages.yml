@@ -1,0 +1,19 @@
+---
+- name: Mail | Mailname for postfix
+  shell: executable=/bin/bash debconf-set-selections <<< "postfix postfix/mailname string {{ mail.domain }}"
+
+- name: Mail | Mailer type for postfix
+  shell: executable=/bin/bash debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+
+- name: Mail | Install required system packages.
+  apt: >
+    pkg={{item}}
+    state=installed
+    update-cache=yes
+    cache_valid_time=3600
+  with_items:
+    - build-essential
+    - postfix
+    - mailutils
+    - opendkim
+    - opendkim-tools

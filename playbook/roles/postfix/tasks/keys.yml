@@ -1,0 +1,11 @@
+---
+- name: Mail | OpenDKIM | Create the DKIM directory
+  file: >
+    dest='/etc/postfix/dkim/'
+    state=directory
+
+- name: Mail | OpenDKIM | Create the DKIM Key
+  shell: opendkim-genkey -D /etc/postfix/dkim/ -d {{ mail.domain }} -s {{ mail.selector }} creates=/etc/postfix/dkim/{{mail.selector}}.private
+
+- name: Mail | OpenDKIM | Change permissions
+  shell: chown opendkim:opendkim /etc/postfix/dkim/* && chmod g+r /etc/postfix/dkim/*

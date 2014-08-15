@@ -1,0 +1,15 @@
+---
+- name: Restart postfix
+  service: name=postfix state=restarted
+
+- name: Restart opendkim
+  service: name=opendkim state=restarted
+
+- name: Postmap transport
+  shell: postmap /etc/postfix/transport
+
+- name: Postmap virtual mailbox
+  shell: postmap /etc/postfix/virtual_mailbox
+
+- name: Reload iptables rules
+  service: name=iptables-persistent state=reloaded

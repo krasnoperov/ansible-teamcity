@@ -1,0 +1,39 @@
+---
+- name: Setup Firewall
+  gather_facts: yes
+  hosts:
+    - dbservers
+    - mailservers
+    - gatewayservers
+    - teamcityservers
+  roles:
+    - { role: iptables }
+
+- name: Configure all Database servers
+  gather_facts: yes
+  hosts:
+    - dbservers
+  roles:
+    - { role: postgres }
+
+- name: Configure all Mail servers
+  gather_facts: yes
+  hosts:
+    - mailservers
+  roles:
+    - { role: postfix }
+
+- name: Configure all Gateway servers
+  gather_facts: yes
+  hosts:
+    - gatewayservers
+  roles:
+    - { role: nginx }
+
+- name: Configure all Teamcity servers
+  gather_facts: yes
+  hosts:
+    - teamcityservers
+  roles:
+    - { role: teamcity }
+

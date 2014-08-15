@@ -1,0 +1,9 @@
+---
+- name: Open the correct IPTables ports
+  lineinfile: dest=/etc/iptables/rules.v4
+              regexp="^-A INPUT -p {{item.protocol}} -m {{item.protocol}} --dport {{item.port}} -j ACCEPT$"
+              line="-A INPUT -p {{item.protocol}} -m {{item.protocol}} --dport {{item.port}} -j ACCEPT"
+              insertafter="^:OUTPUT ACCEPT \[\d*:\d*\]$"
+  with_items:
+    - { protocol: tcp, port: 80 }
+  notify: Reload iptables rules

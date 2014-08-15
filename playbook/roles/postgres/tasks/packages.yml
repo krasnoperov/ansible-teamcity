@@ -1,0 +1,21 @@
+---
+- name: Check add-apt-repository
+  apt: pkg=python-software-properties state=latest update_cache=yes
+
+- name: Add apt key
+  apt_key: url=http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc state=present
+
+- name: Add apt repo
+  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_lsb.codename}}-pgdg main'
+
+- name: Install pgdg-key
+  apt: pkg=pgdg-keyring state=latest update_cache=yes
+
+- name: Install packages
+  apt: >
+    pkg={{item}}
+    state=latest
+  with_items:
+    - postgresql-9.3
+    - postgresql-contrib-9.3
+    - python-psycopg2

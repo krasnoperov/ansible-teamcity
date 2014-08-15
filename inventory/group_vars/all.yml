@@ -1,0 +1,5 @@
+---
+domain: example.com
+teamcity_version: "8.1.4"
+teamcity_home: "/home/teamcity"
+notify_email: aleksei@krasnoperov.me

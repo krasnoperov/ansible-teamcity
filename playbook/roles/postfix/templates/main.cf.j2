@@ -1,0 +1,34 @@
+smtpd_banner = $myhostname ESMTP $mail_name
+
+biff = no
+
+myhostname = {{mail.domain}}
+
+myorigin = /etc/mailname
+
+mydestination =
+
+inet_interfaces = all
+inet_protocols = ipv4
+
+mynetworks = {% for item in groups.get('teamcityservers') %}{{hostvars[item]['ansible_eth0']['ipv4']['address']}}/32 {% endfor %} 127.0.0.0/8
+
+relayhost =
+
+append_dot_mydomain = no
+
+readme_directory = no
+
+milter_default_action = accept
+milter_protocol = 2
+smtpd_milters = inet:localhost:8891
+non_smtpd_milters = inet:localhost:8891
+
+alias_maps = hash:/etc/aliases
+
+virtual_mailbox_base = /var/spool/postfix/virtual/
+virtual_mailbox_domains = {{mail.domain}}
+virtual_mailbox_maps = hash:/etc/postfix/virtual_mailbox
+
+mailbox_size_limit = 0
+recipient_delimiter = +

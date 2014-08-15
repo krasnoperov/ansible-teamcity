@@ -1,0 +1,17 @@
+---
+- name: Create Database User
+  sudo_user: postgres
+  sudo: True
+  postgresql_user: >
+    user={{teamcity.database.user}}
+    password={{teamcity.database.password}}
+    role_attr_flags=NOCREATEDB,NOSUPERUSER
+
+- name: Create Database
+  sudo_user: postgres
+  sudo: True
+  postgresql_db: >
+    name={{teamcity.database.name}}
+    owner={{teamcity.database.user}}
+    template=template0
+    encoding='UTF8'

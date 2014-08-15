@@ -1,0 +1,3 @@
+---
+- name: Send test email
+  shell: echo "This is a test message during an Ansible configuration of {{ mail.domain }} at $(date -R)" | sendmail -f {{mail.user}} {{ notify_email }}

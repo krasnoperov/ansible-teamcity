@@ -1,0 +1,8 @@
+---
+- name: Configuring open file limits
+  lineinfile: dest=/etc/security/limits.conf regexp='^{{ nginx.user }}     -    nofile    {{ nginx.max_open_files }}' insertafter=EOF line='{{ nginx.user }}     -    nofile    {{ nginx.max_open_files }}'
+  when: nginx.max_open_files is defined
+- lineinfile: dest=/etc/pam.d/su regexp='^session    required   pam_limits.so' insertafter=EOF line='session    required   pam_limits.so'
+- lineinfile: dest=/etc/pam.d/common-session regexp='^session    required   pam_limits.so' insertafter=EOF line='session    required   pam_limits.so'
+- lineinfile: dest=/etc/pam.d/common-session-noninteractive regexp='^session    required   pam_limits.so' insertafter=EOF line='session    required   pam_limits.so'
+- lineinfile: dest=/etc/pam.d/sudo regexp='^session    required   pam_limits.so' insertafter=EOF line='session    required   pam_limits.so'

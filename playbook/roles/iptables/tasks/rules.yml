@@ -1,0 +1,11 @@
+---
+- name: Initialize iptables rules
+  template: >
+    src={{item}}.j2
+    dest=/etc/iptables/{{item}}
+    force=yes
+  with_items:
+    - rules.v4
+    - rules.v6
+  notify:
+    - Reload iptables rules

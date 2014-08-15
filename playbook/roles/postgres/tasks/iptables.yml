@@ -1,0 +1,10 @@
+---
+- name: Allow access to teamcityservers
+  when: not 'teamcityservers' in group_names
+  with_items: groups.get('teamcityservers')
+  notify: Reload iptables rules
+  lineinfile: >
+    dest=/etc/iptables/rules.v4
+    regexp="^-A INPUT -s {{item}} -p tcp --dport {{postgresql.port}} -j ACCEPT$"
+    line="-A INPUT -s {{item}} -p tcp --dport {{postgresql.port}} -j ACCEPT"
+    insertafter="^:OUTPUT ACCEPT \[\d*:\d*\]$"

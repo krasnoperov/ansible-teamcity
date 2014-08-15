@@ -1,0 +1,13 @@
+Syslog             yes
+SyslogSuccess      yes
+
+Canonicalization   relaxed/relaxed
+Mode s
+
+KeyTable           file:/etc/postfix/dkim/keytable
+SigningTable       file:/etc/postfix/dkim/signingtable
+
+OversignHeaders    From
+
+#ExternalIgnoreList file:/etc/postfix/dkim/trusted
+#InternalHosts      file:/etc/postfix/dkim/trusted

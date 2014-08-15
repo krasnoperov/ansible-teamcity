@@ -1,0 +1,7 @@
+postgresql:
+  listen_address: '*'
+  port: 5432
+
+limits:
+  user: postgres
+  max_open_files: 65535

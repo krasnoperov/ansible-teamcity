@@ -1,0 +1,26 @@
+---
+- name: Listen on public interface
+  when: not 'teamcityservers' in group_names
+  lineinfile: >
+    dest=/etc/postgresql/9.3/main/postgresql.conf
+    regexp="^listen_addresses"
+    insertafter="^#listen_addresses"
+    line="listen_addresses = '{{postgresql.listen_address}}'"
+  notify: Reload postgresql
+
+- name: Listen on desired port
+  lineinfile: >
+    dest=/etc/postgresql/9.3/main/postgresql.conf
+    regexp="^port"
+    insertafter="^#port"
+    line="port = {{postgresql.port}}"
+  notify: Reload postgresql
+
+- name: Allow access to teamcityservers
+  when: not 'teamcityservers' in group_names
+  with_items: groups.get('teamcityservers')
+  notify: Reload postgresql
+  lineinfile: >
+    dest=/etc/postgresql/9.3/main/pg_hba.conf
+    regexp="host\s+{{teamcity.database.name}}\s+{{teamcity.database.user}}\s+{{hostvars[item]['ansible_eth0']['ipv4']['address']}}/32\s+trust"
+    line="host {{teamcity.database.name}} {{teamcity.database.user}} {{hostvars[item]['ansible_eth0']['ipv4']['address']}}/32 trust"

@@ -1,0 +1,3 @@
+---
+- name: Reload iptables rules
+  service: name=iptables-persistent state=reloaded

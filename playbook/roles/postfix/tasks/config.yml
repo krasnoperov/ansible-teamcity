@@ -1,0 +1,37 @@
+---
+- name: Mail | Forward root user email to {{ notify_email }} if not already forwarding
+  shell: creates=~/.forward chdir=~ echo "{{ notify_email }}" > .forward
+
+- name: Mail | OpenDKIM | Create Settings Files
+  template: >
+    src={{item.src}}
+    dest={{item.dest}}
+    owner=opendkim
+    group=opendkim
+  notify: Restart opendkim
+  with_items:
+    - { 'src': opendkim.conf.j2, 'dest':/etc/opendkim.conf }
+    - { 'src': opendkim.j2, 'dest':/etc/default/opendkim }
+    - { 'src': keytable.j2, 'dest':/etc/postfix/dkim/keytable }
+    - { 'src': signingtable.j2, 'dest':/etc/postfix/dkim/signingtable }
+    - { 'src': trusted.j2, 'dest':/etc/postfix/dkim/trusted }
+
+- name: Mail | Postfix | Create transports
+  template: src=transport.j2 dest=/etc/postfix/transport mode=644 owner=root group=root
+  notify: Postmap transport
+
+- name: Mail | Postfix | Create virtual mailbox
+  template: src=virtual_mailbox.j2 dest=/etc/postfix/virtual_mailbox mode=644  owner=root group=root
+  notify: Postmap virtual mailbox
+
+- name: Mail | Postfix | Create Settings Files
+  template: >
+    src={{item.src}}
+    dest={{item.dest}}
+    mode=644
+    owner=root
+    group=root
+  with_items:
+    - { 'src': main.cf.j2, 'dest':/etc/postfix/main.cf }
+    - { 'src': master.cf.j2, 'dest':/etc/default/master.cf }
+  notify: Restart postfix

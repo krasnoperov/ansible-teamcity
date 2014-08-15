@@ -1,0 +1,6 @@
+---
+- include: packages.yml tags=setup,packages
+- include: access.yml tags=setup,access
+- include: limits.yml tags=setup,limits
+- include: iptables.yml tags=setup,iptables
+- include: database.yml tags=setup,database

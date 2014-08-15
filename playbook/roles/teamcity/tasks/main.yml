@@ -1,0 +1,7 @@
+---
+- include: users.yml tags=setup,users
+- include: database.yml tags=setup,database
+- include: packages.yml tags=setup,packages
+- include: app.yml tags=setup,app
+- include: config.yml tags=setup,config
+- include: vhost.yml  tags=setup,vhost

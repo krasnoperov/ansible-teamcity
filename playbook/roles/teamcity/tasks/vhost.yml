@@ -1,0 +1,4 @@
+---
+- name: Nginx | Install nginx teamcity configuration file
+  notify: Reload nginx
+  template: src=teamcity.conf.j2 dest=/etc/nginx/sites-enabled/teamcity.conf
